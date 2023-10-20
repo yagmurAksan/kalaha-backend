@@ -1,48 +1,27 @@
 package com.bol.kalaha.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public abstract class Pit {
 
     private int id;
 
-    private Player player;
-
     private Pit next;
+
+    private int numOfStones;
 
     public Pit(int id) {
         this.id = id;
     }
 
-    public int getId() {
-        return id;
+    public boolean isEmpty() {
+        return getNumOfStones() == 0;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Pit getNext() {
-        return next;
-    }
-
-    public void setNext(Pit next) {
-        this.next = next;
-    }
-
-    public abstract int getNumOfStones();
-
-    public abstract void setNumOfStones(int numOfStones);
-
-    public abstract boolean isEmpty();
-
-    public abstract void startSow();
+    public abstract void startSowing();
 
     public abstract void sow(int stoneCount);
 

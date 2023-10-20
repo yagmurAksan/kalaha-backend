@@ -2,29 +2,25 @@ package com.bol.kalaha.integration;
 
 import com.bol.kalaha.controller.GameController;
 import com.bol.kalaha.controller.dto.GameResponseDTO;
-import com.bol.kalaha.service.Game;
-import com.bol.kalaha.service.GameLogic;
-import com.bol.kalaha.service.Sowing;
+import com.bol.kalaha.service.GameService;
+import com.bol.kalaha.service.SowingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestGameController {
+class TestGameControllerService {
 
     private GameController gameController;
 
-    private Game game;
+    private GameService gameService;
 
-    private GameLogic gameLogic;
-
-    private Sowing sowing;
+    private SowingService sowingService;
 
     @BeforeEach
     public void beforeTest() {
-        sowing = new Sowing();
-        gameLogic = new GameLogic(sowing);
-        game = new Game(gameLogic);
-        gameController = new GameController(game);
+        sowingService = new SowingService();
+        gameService = new GameService(sowingService);
+        gameController = new GameController(gameService, sowingService);
     }
 
     @Test
@@ -68,7 +64,7 @@ class TestGameController {
     @Test
     void should_createGameResponseDTOWithNoTurnChange_when_makeMove0() {
 
-        game.create();
+        gameService.create();
         GameResponseDTO gameResponseDTO = gameController.makeMove(0);
 
         Assertions.assertEquals(14, gameResponseDTO.pitList().size());
@@ -107,9 +103,9 @@ class TestGameController {
     @Test
     void should_createGameResponseDTOWithWinner_when_makeMove0() {
 
-        game.create();
-        game.getBoard().getPits().forEach(pit->pit.setNumOfStones(0));
-        game.getBoard().getPits().get(0).setNumOfStones(1);
+        gameService.create();
+        gameService.getBoard().getPits().forEach(pit->pit.setNumOfStones(0));
+        gameService.getBoard().getPits().get(0).setNumOfStones(1);
         GameResponseDTO gameResponseDTO = gameController.makeMove(0);
 
         Assertions.assertEquals(14, gameResponseDTO.pitList().size());
@@ -148,9 +144,9 @@ class TestGameController {
     @Test
     void should_createGameResponseDTOWithCollectingFromOpposite_when_makeMove0() {
 
-        game.create();
-        game.getBoard().getPits().get(0).setNumOfStones(1);
-        game.getBoard().getPits().get(1).setNumOfStones(0);
+        gameService.create();
+        gameService.getBoard().getPits().get(0).setNumOfStones(1);
+        gameService.getBoard().getPits().get(1).setNumOfStones(0);
         GameResponseDTO gameResponseDTO = gameController.makeMove(0);
 
         Assertions.assertEquals(14, gameResponseDTO.pitList().size());
@@ -189,7 +185,7 @@ class TestGameController {
     @Test
     void should_createGameResponseDTOWithTurnChange_when_makeMove1() {
 
-        game.create();
+        gameService.create();
         GameResponseDTO gameResponseDTO = gameController.makeMove(1);
 
         Assertions.assertEquals(14, gameResponseDTO.pitList().size());

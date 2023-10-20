@@ -1,30 +1,22 @@
 package com.bol.kalaha.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class LittlePit extends Pit {
-    private int numOfStones;
 
     public LittlePit(int id, int numberOfStones) {
         super(id);
         setNumOfStones(numberOfStones);
     }
 
-    public int getNumOfStones() {
-        return numOfStones;
-    }
-
-    public void setNumOfStones(int numOfStones) {
-        this.numOfStones = numOfStones;
-    }
-
-    public boolean isEmpty() {
-        return this.numOfStones == 0;
-    }
-
     public void sow(int stoneCount) {
-        this.numOfStones++;
+        setNumOfStones(getNumOfStones() + 1);
     }
-    public void startSow() {
-        numOfStones = 0;
+    public void startSowing() {
+        setNumOfStones(0);
     }
 
     public boolean hasOpposite() {

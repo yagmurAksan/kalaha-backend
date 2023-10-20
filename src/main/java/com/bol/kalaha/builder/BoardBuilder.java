@@ -13,17 +13,13 @@ public class BoardBuilder extends Builder{
         board = new Board();
     }
     public void setPlayer(){
-        List<Player> players = new ArrayList<>();
-        Player p1 = new Player(Config.firstPlayerId, 0, 6);
-        Player p2 = new Player(Config.secondPlayerId, 7, 13);
+        Player p1 = new Player(Config.firstPlayerId);
+        Player p2 = new Player(Config.secondPlayerId);
         p1.setOpponent(p2);
         p2.setOpponent(p1);
-        players.add(p1);
-        players.add(p2);
         Turn.setPlayerInTurn(p1);
         Turn.setPlayerOpponent(p2);
         board.setActivePlayer(p1);
-        board.setPlayers(players);
     }
     public void setPit(){
         List<Pit> pits = new ArrayList<>();
@@ -31,21 +27,21 @@ public class BoardBuilder extends Builder{
         setNextPit(pits);
     }
     private void setPit(List<Pit> pits){
-        fillPitList(pits,Config.firstPlayerFirstPitId);
+        fillPitListWithLittlePits(pits, Config.firstPlayerFirstPitId);
         BigPit bigPitFirstPlayer = new BigPit(Config.firstPlayerBigPitId);
         pits.add(bigPitFirstPlayer);
 
-        fillPitList(pits,Config.secondPlayerFirstPitId);
+        fillPitListWithLittlePits(pits, Config.secondPlayerFirstPitId);
         BigPit bigPitSecondPlayer = new BigPit(Config.secondPlayerBigPitId);
         pits.add(bigPitSecondPlayer);
 
-        board.getPlayers().get(0).setBigPit(bigPitFirstPlayer);
-        board.getPlayers().get(0).setLittlePits(pits.subList(0,6));
-        board.getPlayers().get(1).setBigPit(bigPitSecondPlayer);
-        board.getPlayers().get(1).setLittlePits(pits.subList(7,13));
+        board.getActivePlayer().setBigPit(bigPitFirstPlayer);
+        board.getActivePlayer().setLittlePits(pits.subList(0,6));
+        board.getActivePlayer().getOpponent().setBigPit(bigPitSecondPlayer);
+        board.getActivePlayer().getOpponent().setLittlePits(pits.subList(7,13));
         board.setPits(pits);
     }
-    private void fillPitList(List<Pit> pits, int id){
+    private void fillPitListWithLittlePits(List<Pit> pits, int id){
         for(int i = id; i<id+Config.littlePitCountPerPlayer; i++){
             pits.add(new LittlePit(i, 6));
         }

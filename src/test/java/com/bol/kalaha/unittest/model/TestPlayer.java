@@ -7,18 +7,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.bol.kalaha.config.Config.*;
+
 public class TestPlayer {
 
     private Player player;
 
     @BeforeEach
     public void beforeTest() {
-        player = new Player(0, 0, 6);
+        player = new Player(firstPlayerId);
     }
 
     @Test
-    public void should_returnTrue_when_pitId2(){
-        Pit pit = new LittlePit(2, 6);
+    public void should_returnTrue_when_firstPlayerFirstPitId(){
+        Pit pit = new LittlePit(firstPlayerFirstPitId, 6);
 
         boolean actual = player.isPitOwned(pit);
 
@@ -26,8 +28,8 @@ public class TestPlayer {
     }
 
     @Test
-    public void should_returnFalse_when_pitId10(){
-        Pit pit = new LittlePit(10, 6);
+    public void should_returnFalse_when_secondPlayerFirstPitId(){
+        Pit pit = new LittlePit(secondPlayerFirstPitId, 6);
 
         boolean actual = player.isPitOwned(pit);
 

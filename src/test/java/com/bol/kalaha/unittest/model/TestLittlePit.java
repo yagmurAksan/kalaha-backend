@@ -28,7 +28,7 @@ public class TestLittlePit {
     }
 
     @Test
-    public void should_returnTrue_when_noNumOfStones(){
+    public void should_returnTrue_when_numOfStonesZero(){
         littlePit.setNumOfStones(0);
 
         boolean actual = littlePit.isEmpty();
@@ -37,7 +37,7 @@ public class TestLittlePit {
     }
 
     @Test
-    public void should_returnTrue_when_numOfStones(){
+    public void should_returnFalse_when_numOfStonesGreaterThanZero(){
         littlePit.setNumOfStones(1);
 
         boolean actual = littlePit.isEmpty();
@@ -46,7 +46,7 @@ public class TestLittlePit {
     }
 
     @Test
-    public void should_incNumOfStones_when_anyStoneCount(){
+    public void should_incrementStones_when_sow(){
         int stoneCount = 2;
 
         littlePit.sow(stoneCount);
@@ -55,15 +55,15 @@ public class TestLittlePit {
     }
 
     @Test
-    public void should_makeNumOfStonesZero_when_startSow(){
+    public void should_makeNumOfStonesZero_when_startSowing(){
 
-        littlePit.startSow();
+        littlePit.startSowing();
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());
     }
 
     @Test
-    public void should_returnFalse_when_hasOpposite(){
+    public void should_returnTrue_when_hasOpposite(){
 
         boolean actual = littlePit.hasOpposite();
 

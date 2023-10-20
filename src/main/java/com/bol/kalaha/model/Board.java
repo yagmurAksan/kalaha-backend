@@ -2,51 +2,18 @@ package com.bol.kalaha.model;
 
 import com.bol.kalaha.config.Config;
 import com.bol.kalaha.utils.PitNotFoundException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class Board {
-    private List<Player> players;
     private Player activePlayer;
-    private Player opponentPlayer;
+    private Player winnerPlayer;
     private List<Pit> pits;
     private boolean isStoneLeft;
-
-    public Board() {
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
-
-    public Player getActivePlayer() {
-        return activePlayer;
-    }
-
-    public void setActivePlayer(Player player) {
-        this.activePlayer = player;
-        this.opponentPlayer = this.activePlayer.getOpponent();
-    }
-
-    public Player getOpponentPlayer() {
-        return opponentPlayer;
-    }
-
-    public List<Pit> getPits() {
-        return pits;
-    }
-
-    public void setPits(List<Pit> pits) {
-        this.pits = pits;
-    }
-
-    public boolean isStoneLeft() {
-        return isStoneLeft;
-    }
 
     public boolean checkIfAvailableToCollectOpposite(Pit pit) {
         return pit.hasOpposite() && pit.getNumOfStones() == 1;
@@ -56,12 +23,12 @@ public class Board {
         return activePlayer.isPitOwned(pit);
     }
 
-    private void putOpponentStonesToBigPit() {
-        int sumOfStonesInLittlePits = opponentPlayer.getLittlePits().stream()
-                .map(Pit::getNumOfStones)
-                .reduce(0, Integer::sum);
-        opponentPlayer.getLittlePits().forEach(pit -> pit.setNumOfStones(0));
-        opponentPlayer.getBigPit().setNumOfStones(opponentPlayer.getBigPit().getNumOfStones() + sumOfStonesInLittlePits);
+    public boolean checkIfBigPitOfOpponentPlayer(Pit pit) {
+        return getActivePlayer().getOpponent().getBigPit().equals(pit);
+    }
+
+    public boolean checkIfActivePlayerStoneLeft(){
+        return isStoneLeft = activePlayer.getLittlePits().stream().anyMatch(pit -> pit.getNumOfStones() > 0);
     }
 
     public void collectFromOpposite(Pit pit) {
@@ -70,23 +37,19 @@ public class Board {
         oppositePit.setNumOfStones(0);
     }
 
-    public void postSowingBeforePlayerChange() {
+    public void postSowing() {
         if(!checkIfActivePlayerStoneLeft()){
             putOpponentStonesToBigPit();
         }
     }
 
-    public boolean checkIfActivePlayerStoneLeft(){
-        for(Pit pit : activePlayer.getLittlePits()) {
-            if(pit.getNumOfStones() > 0) {
-                return isStoneLeft = true;
-            }
-        }
-        return isStoneLeft = false;
-    }
-
-    public boolean checkIfBigPitOfOpponentPlayer(Pit pit) {
-        return opponentPlayer.getBigPit().equals(pit);
+    private void putOpponentStonesToBigPit() {
+        Player opponentPlayer = activePlayer.getOpponent();
+        int sumOfStonesInLittlePits = opponentPlayer.getLittlePits().stream()
+                .map(Pit::getNumOfStones)
+                .reduce(0, Integer::sum);
+        opponentPlayer.getLittlePits().forEach(pit -> pit.setNumOfStones(0));
+        opponentPlayer.getBigPit().setNumOfStones(opponentPlayer.getBigPit().getNumOfStones() + sumOfStonesInLittlePits);
     }
 
     public Pit getPitById(int id) {

@@ -2,7 +2,6 @@ package com.bol.kalaha.controller.mapper;
 
 import com.bol.kalaha.controller.dto.GameResponseDTO;
 import com.bol.kalaha.model.Board;
-import com.bol.kalaha.model.Player;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -14,6 +13,6 @@ public interface GameMapper {
 
     @Mapping(source = "board.pits", target = "pitList")
     @Mapping(source = "board.activePlayer", target = "playerInTurn")
-    @Mapping(source = "winner", target = "playerWinner")
-    GameResponseDTO toDto(Board board, Player winner);
+    @Mapping(source = "board.winnerPlayer", target = "playerWinner")
+    GameResponseDTO toDto(Board board);
 }

@@ -9,7 +9,7 @@ public class TestTurn {
 
 
     @Test
-    public void should_setIsWillChangeFalse_when_turnEndedOnBigPit(){
+    public void should_setWillChangeToFalse_when_turnEndedOnBigPit(){
 
         Turn.turnEndedOnBigPit();
 
@@ -18,7 +18,7 @@ public class TestTurn {
 
     @Test
     public void should_returnPlayerInTurn_when_willChangeFalse(){
-        Player p1 = new Player(0, 0, 6);
+        Player p1 = new Player(0);
         Turn.setPlayerInTurn(p1);
 
         Turn.turnEndedOnBigPit();
@@ -30,8 +30,8 @@ public class TestTurn {
 
     @Test
     public void should_returnPlayerOpponent_when_willChangeTrue(){
-        Player p1 = new Player(0, 0, 6);
-        Player p2 = new Player(1, 7, 13);
+        Player p1 = new Player(0);
+        Player p2 = new Player(1);
         p1.setOpponent(p2);
         p2.setOpponent(p1);
         Turn.setPlayerInTurn(p1);

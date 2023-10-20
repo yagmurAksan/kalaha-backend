@@ -1,28 +1,47 @@
-# Kalaha Game Project #
+# Kalaha Game #
+
+This application implements Kalaha Game. In the game, there are 2 players. Each of the two players has his six pits in front of him. To the right of the six pits,
+each player has a big pit. At the start of the game, there are six stones in each of the six little pits and there is no stones in the big pits.
+
+This project has both backend and frontend implementations as a separate projects. The repositories are provided in [backend](https://github.com/yagmurAksan/kalaha-backend) and [frontend](https://github.com/yagmurAksan/kalaha-frontend) repositories.
+
 
 ## Technology Stack ##
-This project has both backend and frontend as a separate project.
 
-IntelliJ IDEA is used as IDE for both of the projects.
-
-For the backend, I use Spring Boot 3.1.4 and Java 17. As a build tool I use maven. As this project is small, I prefer not to use database.
+- `IntelliJ IDEA` is used as IDE for the implementation.
+- For the backend, I use `Spring Boot 3.1.4` and `Java 17`. 
+- As a build tool I use `Maven`. 
+- For generating the getter and setter methods, `Spring Boot Lombok` library is used.
+- `MapStruct` library is used to simplify data transfer between classes.
+- `springdoc-openapi` library is used for API documentation
+- As this project is small, I prefer not to use database.
 
 
 ## Project Architecture ##
-For the backend, there are 6 packages:
-+ builder: I use Builder Design Pattern for creating the board of the game including players and pits. So the files regrading to this are included in this package.
-+ config: It includes the constant values for the game like player ids, pit starting ids belong to each player and so on.
-+ controller: It includes files for communicating with the frontend. I also use mapperstruct for converting objects to dto objects in order to send them to frontend.
-+ model: It includes domain model objects. In my design there are 4 objects:
-    + BigPit
-    + LittlePit
-    + Board
-    + Player
-    + Pit (abstract class extended by BigPit and LittlePit)
-+ service: It includes the logic classes of the project. I seperate them into 3:
-    + Game is like a starting point of the behavior.
-    + GameLogic is like a manager position in the game. It is responsible for starting sowing and determining winner.
-    + Sowing is the main place for managing sowing behavior.
-+ utils: It includes Turn class which keeps the state of the game as for the turn of the players. And it also includes the custom exception classes in the project.
 
-In addition, Unit tests and Integration tests are written.
+For the backend, there are 6 packages:
+- builder: I use Builder Design Pattern for creating the board of the game including players and pits. The files regarding this implementation are included in this package.
+- config: It includes the constant values for the game like player ids, pit starting ids belong to each player and so on.
+- controller: It includes files for communicating with the frontend. I also use mapper-struct for converting objects to dto objects in order to send them to frontend.
+- model: It includes domain model objects. In my design there are 4 objects:
+    - `BigPit`
+    - `LittlePit`
+    - `Board`
+    - `Player`
+    - `Pit` (abstract class extended by BigPit and LittlePit)
+- service: It includes the logic classes of the project. I seperate them into 2:
+    - `GameService` is responsible for starting the game. It creates the required objects for the game to start.
+    - `SowingService` is the main place for managing sowing behavior.
+- utils: It includes Turn class which keeps the state of the game as for the turn of the players. 
+It also includes the custom exception classes in the project.
+
+In addition, Unit tests and Integration tests are implemented in the test package.
+
+
+## How to run ##
+
+In order to run the project, Java 17 and Maven must be installed on the computer.
+
+When you run the server, you can access the Game via Swagger at this address: http://localhost:8080/swagger-ui/index.html
+
+In order to reach the UI, you must also run the frontend project according to the instructions in README file provided in that project.

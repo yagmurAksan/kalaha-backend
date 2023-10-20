@@ -29,7 +29,7 @@ public class TestBigPit {
     }
 
     @Test
-    public void should_returnTrue_when_noNumOfStones(){
+    public void should_returnTrue_when_numOfStonesZero(){
         bigPit.setNumOfStones(0);
 
         boolean actual = bigPit.isEmpty();
@@ -38,7 +38,7 @@ public class TestBigPit {
     }
 
     @Test
-    public void should_returnTrue_when_numOfStones(){
+    public void should_returnFalse_when_numOfStonesGreaterThanZero(){
         bigPit.setNumOfStones(1);
 
         boolean actual = bigPit.isEmpty();
@@ -47,28 +47,35 @@ public class TestBigPit {
     }
 
     @Test
-    public void should_notCallTurnIncNumOfStones_when_sowWith2Stone(){
+    public void should_incrementStones_when_sow(){
+        int stoneCount = 2;
+
+        bigPit.sow(stoneCount);
+
+        Assertions.assertEquals(1, bigPit.getNumOfStones());
+    }
+
+    @Test
+    public void should_notCallTurnEndedOnBigPit_when_sowWithMoreThanOneStone(){
         int stoneCount = 2;
 
         bigPit.sow(stoneCount);
 
         turn.verify(Turn::turnEndedOnBigPit, never());
-        Assertions.assertEquals(1, bigPit.getNumOfStones());
     }
 
     @Test
-    public void should_callTurnIncNumOfStones_when_sowWith1Stone(){
+    public void should_callTurnEndedOnBigPit_when_sowWithOneStone(){
         int stoneCount = 1;
 
         bigPit.sow(stoneCount);
 
         turn.verify(Turn::turnEndedOnBigPit, only());
-        Assertions.assertEquals(1, bigPit.getNumOfStones());
     }
 
     @Test
-    public void should_throwException_when_startSow(){
-        Assertions.assertThrows(SowingNotApplicableException.class, () -> bigPit.startSow());
+    public void should_throwException_when_startSowing(){
+        Assertions.assertThrows(SowingNotApplicableException.class, () -> bigPit.startSowing());
     }
 
     @Test

@@ -1,13 +1,16 @@
 package com.bol.kalaha.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+import static com.bol.kalaha.config.Config.*;
+
+@Getter
+@Setter
 public class Player {
     private int id;
-
-    private final int minPitId;
-
-    private final int maxPitId;
 
     private Player opponent;
 
@@ -15,41 +18,13 @@ public class Player {
 
     private BigPit bigPit;
 
-    public Player(int id, int minPit, int maxPit) {
+    public Player(int id) {
         this.id = id;
-        this.minPitId = minPit;
-        this.maxPitId = maxPit;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Player getOpponent(){
-        return this.opponent;
-    }
-
-    public void setOpponent(Player opponent){
-        this.opponent = opponent;
-    }
-
-    public List<Pit> getLittlePits() {
-        return littlePits;
-    }
-
-    public void setLittlePits(List<Pit> littlePits) {
-        this.littlePits = littlePits;
-    }
-
-    public BigPit getBigPit() {
-        return bigPit;
-    }
-
-    public void setBigPit(BigPit bigPit) {
-        this.bigPit = bigPit;
     }
 
     public boolean isPitOwned(Pit pit){
+        int minPitId = id==firstPlayerId ? firstPlayerFirstPitId : secondPlayerFirstPitId;
+        int maxPitId = id==firstPlayerId ? firstPlayerBigPitId : secondPlayerBigPitId;
         return pit.getId() >= minPitId && pit.getId() <= maxPitId;
     }
 }
