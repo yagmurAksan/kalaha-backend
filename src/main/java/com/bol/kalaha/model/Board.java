@@ -1,7 +1,7 @@
 package com.bol.kalaha.model;
 
-import com.bol.kalaha.config.Config;
-import com.bol.kalaha.utils.PitNotFoundException;
+import com.bol.kalaha.constant.GameConstants;
+import com.bol.kalaha.exception.PitNotFoundException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +32,7 @@ public class Board {
     }
 
     public void collectFromOpposite(Pit pit) {
-        var oppositePit = getPitById(Math.abs(pit.getId() - Config.totalLittlePitCount));
+        var oppositePit = getPitById(Math.abs(pit.getId() - GameConstants.totalLittlePitCount));
         activePlayer.getBigPit().setNumOfStones(pit.getNumOfStones() + oppositePit.getNumOfStones() + activePlayer.getBigPit().getNumOfStones());
         oppositePit.setNumOfStones(0);
     }

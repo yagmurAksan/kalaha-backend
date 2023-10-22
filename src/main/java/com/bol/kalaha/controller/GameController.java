@@ -4,7 +4,6 @@ import com.bol.kalaha.controller.dto.GameResponseDTO;
 import com.bol.kalaha.service.GameService;
 import com.bol.kalaha.controller.mapper.GameMapper;
 import com.bol.kalaha.service.SowingService;
-import com.bol.kalaha.utils.Turn;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -60,7 +59,7 @@ public class GameController {
         sowingService.executeSowing(id);
 
         log.info("Move is made for pit id: " + id);
-        log.info("Player in Turn id: " + Turn.getPlayerInTurn().getId());
+        log.info("Player in Turn id: " + gameService.getBoard().getActivePlayer().getId());
 
         return GameMapper.INSTANCE.toDto(gameService.getBoard());
     }

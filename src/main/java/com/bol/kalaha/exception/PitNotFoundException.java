@@ -1,4 +1,4 @@
-package com.bol.kalaha.utils;
+package com.bol.kalaha.exception;
 
 public class PitNotFoundException extends RuntimeException {
     public PitNotFoundException(String message) {

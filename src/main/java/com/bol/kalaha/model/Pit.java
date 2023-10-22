@@ -18,12 +18,12 @@ public abstract class Pit {
     }
 
     public boolean isEmpty() {
-        return getNumOfStones() == 0;
+        return numOfStones == 0;
     }
 
-    public abstract void startSowing();
-
-    public abstract void sow(int stoneCount);
+    public void sow() {
+        numOfStones++;
+    }
 
     public abstract boolean hasOpposite();
 

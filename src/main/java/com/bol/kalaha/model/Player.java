@@ -5,8 +5,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-import static com.bol.kalaha.config.Config.*;
-
 @Getter
 @Setter
 public class Player {
@@ -23,8 +21,6 @@ public class Player {
     }
 
     public boolean isPitOwned(Pit pit){
-        int minPitId = id==firstPlayerId ? firstPlayerFirstPitId : secondPlayerFirstPitId;
-        int maxPitId = id==firstPlayerId ? firstPlayerBigPitId : secondPlayerBigPitId;
-        return pit.getId() >= minPitId && pit.getId() <= maxPitId;
+        return littlePits.contains(pit) || bigPit == pit;
     }
 }

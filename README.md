@@ -11,7 +11,7 @@ This project has both backend and frontend implementations as a separate project
 - `IntelliJ IDEA` is used as IDE for the implementation.
 - For the backend, I use `Spring Boot 3.1.4` and `Java 17`. 
 - As a build tool I use `Maven`. 
-- For generating the getter and setter methods, `Spring Boot Lombok` library is used.
+- For generating constructors, getter and setter methods, `Spring Boot Lombok` library is used.
 - `MapStruct` library is used to simplify data transfer between classes.
 - `springdoc-openapi` library is used for API documentation
 - As this project is small, I prefer not to use database.
@@ -21,9 +21,14 @@ This project has both backend and frontend implementations as a separate project
 
 For the backend, there are 6 packages:
 - builder: I use Builder Design Pattern for creating the board of the game including players and pits. The files regarding this implementation are included in this package.
-- config: It includes the constant values for the game like player ids, pit starting ids belong to each player and so on.
-- controller: It includes files for communicating with the frontend. I also use mapper-struct for converting objects to dto objects in order to send them to frontend.
-- model: It includes domain model objects. In my design there are 4 objects:
+- controller: It includes files for communicating with the frontend. 
+I use RestAPI for the communication. There are 2 endpoints:
+  - /startGame - Creates a new game and returns a GameResponseDTO as a json format.
+  - /makeMove - Expects a pit id as a path variable and makes the move on the id and returns a GameResponseDTO as a json format.
+
+  I also use mapper-struct for converting objects to dto objects in order to send them to frontend.
+
+- model: It includes model objects. In my design there are 4 objects:
     - `BigPit`
     - `LittlePit`
     - `Board`
@@ -32,8 +37,8 @@ For the backend, there are 6 packages:
 - service: It includes the logic classes of the project. I seperate them into 2:
     - `GameService` is responsible for starting the game. It creates the required objects for the game to start.
     - `SowingService` is the main place for managing sowing behavior.
-- utils: It includes Turn class which keeps the state of the game as for the turn of the players. 
-It also includes the custom exception classes in the project.
+- constant: It includes the GameConstants class with constant values for the game like player ids, pit starting ids belong to each player and so on.
+- exception: It includes the custom exception classes in the project.
 
 In addition, Unit tests and Integration tests are implemented in the test package.
 

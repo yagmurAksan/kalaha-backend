@@ -1,11 +1,12 @@
 package com.bol.kalaha.builder;
 
-import com.bol.kalaha.utils.Turn;
-import com.bol.kalaha.config.Config;
+import com.bol.kalaha.constant.GameConstants;
 import com.bol.kalaha.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.bol.kalaha.constant.GameConstants.*;
 
 public class BoardBuilder extends Builder{
     private Board board;
@@ -13,12 +14,10 @@ public class BoardBuilder extends Builder{
         board = new Board();
     }
     public void setPlayer(){
-        Player p1 = new Player(Config.firstPlayerId);
-        Player p2 = new Player(Config.secondPlayerId);
+        Player p1 = new Player(GameConstants.firstPlayerId);
+        Player p2 = new Player(GameConstants.secondPlayerId);
         p1.setOpponent(p2);
         p2.setOpponent(p1);
-        Turn.setPlayerInTurn(p1);
-        Turn.setPlayerOpponent(p2);
         board.setActivePlayer(p1);
     }
     public void setPit(){
@@ -27,22 +26,22 @@ public class BoardBuilder extends Builder{
         setNextPit(pits);
     }
     private void setPit(List<Pit> pits){
-        fillPitListWithLittlePits(pits, Config.firstPlayerFirstPitId);
-        BigPit bigPitFirstPlayer = new BigPit(Config.firstPlayerBigPitId);
+        fillPitListWithLittlePits(pits, firstPlayerFirstPitId);
+        BigPit bigPitFirstPlayer = new BigPit(firstPlayerBigPitId);
         pits.add(bigPitFirstPlayer);
 
-        fillPitListWithLittlePits(pits, Config.secondPlayerFirstPitId);
-        BigPit bigPitSecondPlayer = new BigPit(Config.secondPlayerBigPitId);
+        fillPitListWithLittlePits(pits, GameConstants.secondPlayerFirstPitId);
+        BigPit bigPitSecondPlayer = new BigPit(GameConstants.secondPlayerBigPitId);
         pits.add(bigPitSecondPlayer);
 
         board.getActivePlayer().setBigPit(bigPitFirstPlayer);
-        board.getActivePlayer().setLittlePits(pits.subList(0,6));
+        board.getActivePlayer().setLittlePits(pits.subList(firstPlayerFirstPitId, firstPlayerBigPitId));
         board.getActivePlayer().getOpponent().setBigPit(bigPitSecondPlayer);
-        board.getActivePlayer().getOpponent().setLittlePits(pits.subList(7,13));
+        board.getActivePlayer().getOpponent().setLittlePits(pits.subList(secondPlayerFirstPitId, secondPlayerBigPitId));
         board.setPits(pits);
     }
     private void fillPitListWithLittlePits(List<Pit> pits, int id){
-        for(int i = id; i<id+Config.littlePitCountPerPlayer; i++){
+        for(int i = id; i<id+ GameConstants.littlePitCountPerPlayer; i++){
             pits.add(new LittlePit(i, 6));
         }
     }

@@ -1,4 +1,4 @@
-package com.bol.kalaha.utils;
+package com.bol.kalaha.exception;
 
 public class SowingNotApplicableException extends RuntimeException {
     public SowingNotApplicableException(String message) {

@@ -1,30 +1,17 @@
 package com.bol.kalaha.unittest.model;
 
 import com.bol.kalaha.model.LittlePit;
-import com.bol.kalaha.utils.Turn;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-
-import static org.mockito.Mockito.*;
 
 public class TestLittlePit {
 
     private LittlePit littlePit;
 
-    private MockedStatic<Turn> turn;
-
     @BeforeEach
     public void beforeTest() {
         littlePit = new LittlePit(1, 6);
-        turn = mockStatic(Turn.class);
-    }
-
-    @AfterEach
-    public void afterTest() {
-        turn.close();
     }
 
     @Test
@@ -47,19 +34,10 @@ public class TestLittlePit {
 
     @Test
     public void should_incrementStones_when_sow(){
-        int stoneCount = 2;
 
-        littlePit.sow(stoneCount);
+        littlePit.sow();
 
         Assertions.assertEquals(7, littlePit.getNumOfStones());
-    }
-
-    @Test
-    public void should_makeNumOfStonesZero_when_startSowing(){
-
-        littlePit.startSowing();
-
-        Assertions.assertEquals(0, littlePit.getNumOfStones());
     }
 
     @Test

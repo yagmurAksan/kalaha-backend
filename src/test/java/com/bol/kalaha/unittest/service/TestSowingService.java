@@ -2,20 +2,15 @@ package com.bol.kalaha.unittest.service;
 
 import com.bol.kalaha.model.*;
 import com.bol.kalaha.service.SowingService;
-import com.bol.kalaha.utils.SowingNotApplicableException;
-import com.bol.kalaha.utils.Turn;
-import org.junit.jupiter.api.AfterEach;
+import com.bol.kalaha.exception.SowingNotApplicableException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-
-import static org.mockito.Mockito.mockStatic;
 
 @ExtendWith(MockitoExtension.class)
 public class TestSowingService {
@@ -25,12 +20,8 @@ public class TestSowingService {
 
     private Board board;
 
-    private MockedStatic<Turn> turn;
-
     @BeforeEach
     public void beforeTest() {
-        turn = mockStatic(Turn.class);
-
         board = new Board();
         board.setPits(new ArrayList<>());
         Player playerActive = new Player(1);
@@ -96,11 +87,6 @@ public class TestSowingService {
         sowingService.setBoard(board);
     }
 
-    @AfterEach
-    public void afterTest() {
-        turn.close();
-    }
-
     private Pit getNextPit(Pit pit, int times) {
         Pit current = pit;
         for(int i=0; i<times; i++) {
@@ -115,10 +101,14 @@ public class TestSowingService {
     }
 
     @Test
+    public void should_throwException_when_executeSowingWithBigPit(){
+        Assertions.assertThrows(SowingNotApplicableException.class, () -> sowingService.executeSowing(6));
+    }
+
+    @Test
     public void should_emptyPitAndAddOneToNextPit_when_executeSowing(){
         Pit littlePit = board.getActivePlayer().getOpponent().getLittlePits().get(0);
 
-        turn.when(Turn::getPlayerInTurn).thenReturn(board.getActivePlayer());
         sowingService.executeSowing(7);
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());
@@ -130,7 +120,6 @@ public class TestSowingService {
         Pit littlePit = board.getActivePlayer().getLittlePits().get(5);
         littlePit.setNumOfStones(8);
 
-        turn.when(Turn::getPlayerInTurn).thenReturn(board.getActivePlayer());
         sowingService.executeSowing(5);
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());
@@ -149,7 +138,6 @@ public class TestSowingService {
     public void should_collectFromOpposite_when_executeSowingWithNextPitZero(){
         Pit littlePit = board.getActivePlayer().getLittlePits().get(4);
 
-        turn.when(Turn::getPlayerInTurn).thenReturn(board.getActivePlayer());
         sowingService.executeSowing(4);
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());
@@ -164,7 +152,6 @@ public class TestSowingService {
         Pit nextPit = board.getActivePlayer().getLittlePits().get(5);
         nextPit.setNumOfStones(1);
 
-        turn.when(Turn::getPlayerInTurn).thenReturn(board.getActivePlayer());
         sowingService.executeSowing(4);
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());
@@ -178,7 +165,6 @@ public class TestSowingService {
         Pit littlePit = board.getActivePlayer().getLittlePits().get(5);
         littlePit.setNumOfStones(1);
 
-        turn.when(Turn::getPlayerInTurn).thenReturn(board.getActivePlayer());
         sowingService.executeSowing(5);
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());
@@ -191,7 +177,6 @@ public class TestSowingService {
         Pit littlePit = board.getActivePlayer().getLittlePits().get(5);
         littlePit.setNumOfStones(2);
 
-        turn.when(Turn::getPlayerInTurn).thenReturn(board.getActivePlayer());
         sowingService.executeSowing(5);
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());
@@ -205,8 +190,6 @@ public class TestSowingService {
         Pit littlePit = board.getActivePlayer().getLittlePits().get(5);
         littlePit.setNumOfStones(1);
 
-        turn.when(Turn::getNextPlayer).thenReturn(activePlayer);
-        turn.when(Turn::getPlayerInTurn).thenReturn(activePlayer);
         sowingService.executeSowing(5);
 
         Assertions.assertEquals(activePlayer, board.getActivePlayer());
@@ -218,8 +201,6 @@ public class TestSowingService {
         Pit littlePit = board.getActivePlayer().getLittlePits().get(5);
         littlePit.setNumOfStones(2);
 
-        turn.when(Turn::getNextPlayer).thenReturn(board.getActivePlayer().getOpponent());
-        turn.when(Turn::getPlayerInTurn).thenReturn(board.getActivePlayer().getOpponent());
         sowingService.executeSowing(5);
 
         Assertions.assertEquals(opponentPlayer, board.getActivePlayer());
@@ -234,8 +215,6 @@ public class TestSowingService {
         Pit littlePit = activePlayer.getLittlePits().get(5);
         littlePit.setNumOfStones(2);
 
-        turn.when(Turn::getPlayerInTurn).thenReturn(activePlayer);
-        turn.when(Turn::getPlayerOpponent).thenReturn(opponentPlayer);
         sowingService.executeSowing(5);
 
         Assertions.assertEquals(0, littlePit.getNumOfStones());

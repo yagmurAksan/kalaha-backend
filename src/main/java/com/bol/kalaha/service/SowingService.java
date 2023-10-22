@@ -3,8 +3,7 @@ package com.bol.kalaha.service;
 import com.bol.kalaha.model.Board;
 import com.bol.kalaha.model.Pit;
 import com.bol.kalaha.model.Player;
-import com.bol.kalaha.utils.SowingNotApplicableException;
-import com.bol.kalaha.utils.Turn;
+import com.bol.kalaha.exception.SowingNotApplicableException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +22,26 @@ public class SowingService {
             throw new SowingNotApplicableException("Sowing cannot be started with 0 stone.");
         }
         int initialStoneCount = pit.getNumOfStones();
-        pit.startSowing();
+        startSowing(pit);
         var lastSowedPit = sowSubsequent(pit, initialStoneCount);
         finishSowing(lastSowedPit);
-        finishTurn();
+        determineTurn(lastSowedPit);
+        determineWinner();
+    }
+
+    private static void startSowing(Pit pit) {
+        if(pit.hasOpposite()) {
+            pit.setNumOfStones(0);
+        } else {
+            throw new SowingNotApplicableException("Sowing cannot be started by big pit.");
+        }
     }
 
     private Pit sowSubsequent(Pit pit, int stoneCount) {
         while(stoneCount > 0) {
             pit = pit.getNext();
             if(!board.checkIfBigPitOfOpponentPlayer(pit)) {
-                pit.sow(stoneCount);
+                pit.sow();
                 stoneCount--;
             }
         }
@@ -41,29 +49,25 @@ public class SowingService {
     }
 
     private void finishSowing(Pit lastSowedPit){
-        if(board.checkIfAvailableToCollectOpposite(lastSowedPit) && board.checkIfBelongActivePlayer(lastSowedPit)) {
+        if(board.checkIfBelongActivePlayer(lastSowedPit) && board.checkIfAvailableToCollectOpposite(lastSowedPit)) {
             board.collectFromOpposite(lastSowedPit);
             lastSowedPit.setNumOfStones(0);
         }
+        board.postSowing();
     }
 
-    private void finishTurn(){
-        board.postSowing();
-        determineTurn();
-        if(!board.isStoneLeft()) {
-            determineWinner();
+    private void determineTurn(Pit lastSowedPit) {
+        if(!board.checkIfBelongActivePlayer(lastSowedPit) || lastSowedPit.hasOpposite()) {
+            board.setActivePlayer(board.getActivePlayer().getOpponent());
         }
     }
 
-    private void determineTurn() {
-        Player player = Turn.getNextPlayer();
-        board.setActivePlayer(player);
-    }
-
     private void determineWinner() {
-        Player playerInTurn = Turn.getPlayerInTurn();
-        Player playerOpponent = Turn.getPlayerOpponent();
-        Player winnerPlayer = playerInTurn.getBigPit().getNumOfStones() > playerOpponent.getBigPit().getNumOfStones() ? playerInTurn : playerOpponent;
-        board.setWinnerPlayer(winnerPlayer);
+        if(!board.isStoneLeft()) {
+            Player playerActive = board.getActivePlayer();
+            Player playerOpponent = playerActive.getOpponent();
+            Player winnerPlayer = playerActive.getBigPit().getNumOfStones() > playerOpponent.getBigPit().getNumOfStones() ? playerActive : playerOpponent;
+            board.setWinnerPlayer(winnerPlayer);
+        }
     }
 }

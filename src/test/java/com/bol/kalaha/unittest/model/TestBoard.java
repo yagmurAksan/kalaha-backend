@@ -2,9 +2,9 @@ package com.bol.kalaha.unittest.model;
 
 import com.bol.kalaha.builder.BoardBuilder;
 import com.bol.kalaha.builder.BoardCreator;
-import com.bol.kalaha.config.Config;
+import com.bol.kalaha.constant.GameConstants;
 import com.bol.kalaha.model.*;
-import com.bol.kalaha.utils.PitNotFoundException;
+import com.bol.kalaha.exception.PitNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class TestBoard {
 
     @Test
     public void should_returnTrue_when_bigPitBelongsActivePlayer(){
-        Pit bigPit = board.getPitById(Config.firstPlayerBigPitId);
+        Pit bigPit = board.getPitById(GameConstants.firstPlayerBigPitId);
 
         boolean actual = board.checkIfBelongActivePlayer(bigPit);
 
@@ -59,7 +59,7 @@ public class TestBoard {
 
     @Test
     public void should_returnFalse_when_bigPitNotBelongsActivePlayer(){
-        Pit bigPit = board.getPitById(Config.secondPlayerBigPitId);
+        Pit bigPit = board.getPitById(GameConstants.secondPlayerBigPitId);
 
         boolean actual = board.checkIfBelongActivePlayer(bigPit);
 
@@ -68,7 +68,7 @@ public class TestBoard {
 
     @Test
     public void should_returnTrue_when_littlePitBelongsActivePlayer(){
-        Pit littlePit = board.getPitById(Config.firstPlayerFirstPitId);
+        Pit littlePit = board.getPitById(GameConstants.firstPlayerFirstPitId);
 
         boolean actual = board.checkIfBelongActivePlayer(littlePit);
 
@@ -77,7 +77,7 @@ public class TestBoard {
 
     @Test
     public void should_returnFalse_when_littlePitNotBelongsActivePlayer(){
-        Pit littlePit = board.getPitById(Config.secondPlayerFirstPitId);
+        Pit littlePit = board.getPitById(GameConstants.secondPlayerFirstPitId);
 
         boolean actual = board.checkIfBelongActivePlayer(littlePit);
 
@@ -86,7 +86,7 @@ public class TestBoard {
 
     @Test
     public void should_returnTrue_when_bigPitOfOpponentPlayer(){
-        Pit bigPit = board.getPitById(Config.secondPlayerBigPitId);
+        Pit bigPit = board.getPitById(GameConstants.secondPlayerBigPitId);
 
         boolean actual = board.checkIfBigPitOfOpponentPlayer(bigPit);
 
@@ -95,7 +95,7 @@ public class TestBoard {
 
     @Test
     public void should_returnFalse_when_bigPitOfActivePlayer(){
-        Pit bigPit = board.getPitById(Config.firstPlayerBigPitId);
+        Pit bigPit = board.getPitById(GameConstants.firstPlayerBigPitId);
 
         boolean actual = board.checkIfBigPitOfOpponentPlayer(bigPit);
 
@@ -121,8 +121,8 @@ public class TestBoard {
 
     @Test
     public void should_addNumOfStonesOfOppositePitToBigPit_when_collectFromOpposite(){
-        Pit pit = board.getPitById(Config.firstPlayerFirstPitId);
-        Pit oppositePit = board.getPitById(Config.secondPlayerBigPitId-1);
+        Pit pit = board.getPitById(GameConstants.firstPlayerFirstPitId);
+        Pit oppositePit = board.getPitById(GameConstants.secondPlayerBigPitId-1);
         int expectedNumOfStones = board.getActivePlayer().getBigPit().getNumOfStones() + pit.getNumOfStones() + oppositePit.getNumOfStones();
 
         board.collectFromOpposite(pit);

@@ -12,13 +12,6 @@ public class LittlePit extends Pit {
         setNumOfStones(numberOfStones);
     }
 
-    public void sow(int stoneCount) {
-        setNumOfStones(getNumOfStones() + 1);
-    }
-    public void startSowing() {
-        setNumOfStones(0);
-    }
-
     public boolean hasOpposite() {
         return true;
     }
