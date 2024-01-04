@@ -11,8 +11,8 @@ import org.mapstruct.factory.Mappers;
 public interface GameMapper {
     GameMapper INSTANCE = Mappers.getMapper(GameMapper.class);
 
-    @Mapping(source = "board.pits", target = "pitList")
-    @Mapping(source = "board.activePlayer", target = "playerInTurn")
-    @Mapping(source = "board.winnerPlayer", target = "playerWinner")
+    @Mapping(source = "pits", target = "pitList")
+    @Mapping(source = "activePlayer", target = "playerInTurn")
+    @Mapping(source = "winnerPlayer", target = "playerWinner")
     GameResponseDTO toDto(Board board);
 }

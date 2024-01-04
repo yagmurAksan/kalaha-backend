@@ -29,8 +29,13 @@ class TestGameControllerService {
     @Test
     void should_callCreateOfGameService_when_startGame() {
 
-        gameController.startGame();
+        // given:
+        when(gameService.getBoard()).thenReturn(new Board());
 
+        // when:
+        var actual = gameController.startGame();
+
+        // then:
         verify(gameService, times(1)).create();
     }
 

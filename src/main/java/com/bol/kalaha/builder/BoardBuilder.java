@@ -30,8 +30,8 @@ public class BoardBuilder extends Builder{
         BigPit bigPitFirstPlayer = new BigPit(firstPlayerBigPitId);
         pits.add(bigPitFirstPlayer);
 
-        fillPitListWithLittlePits(pits, GameConstants.secondPlayerFirstPitId);
-        BigPit bigPitSecondPlayer = new BigPit(GameConstants.secondPlayerBigPitId);
+        fillPitListWithLittlePits(pits, secondPlayerFirstPitId);
+        BigPit bigPitSecondPlayer = new BigPit(secondPlayerBigPitId);
         pits.add(bigPitSecondPlayer);
 
         board.getActivePlayer().setBigPit(bigPitFirstPlayer);
@@ -41,7 +41,7 @@ public class BoardBuilder extends Builder{
         board.setPits(pits);
     }
     private void fillPitListWithLittlePits(List<Pit> pits, int id){
-        for(int i = id; i<id+ GameConstants.littlePitCountPerPlayer; i++){
+        for(int i = id; i<id+ littlePitCountPerPlayer; i++){
             pits.add(new LittlePit(i, 6));
         }
     }

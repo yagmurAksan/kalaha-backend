@@ -29,7 +29,7 @@ public class SowingService {
         determineWinner();
     }
 
-    private static void startSowing(Pit pit) {
+    private void startSowing(Pit pit) {
         if(pit.hasOpposite()) {
             pit.setNumOfStones(0);
         } else {

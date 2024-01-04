@@ -5,6 +5,7 @@ import com.bol.kalaha.model.Board;
 import com.bol.kalaha.model.Player;
 import com.bol.kalaha.service.GameService;
 import com.bol.kalaha.service.SowingService;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +31,8 @@ class TestAPIGameControllerService {
     private SowingService sowingService;
 
     @Test
-    void should_getResponseSuccessfully_when_startGameRestCall() throws Exception {
+    @SneakyThrows
+    void should_getResponseSuccessfully_when_startGameRestCall() {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/startGame")
@@ -40,7 +42,8 @@ class TestAPIGameControllerService {
     }
 
     @Test
-    void should_getResponseSuccessfully_when_makeMoveRestCall() throws Exception {
+    @SneakyThrows
+    void should_getResponseSuccessfully_when_makeMoveRestCall(){
         Board board = new Board();
         board.setActivePlayer(new Player(1));
 

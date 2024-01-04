@@ -32,7 +32,7 @@ public class GameController {
             @ApiResponse(responseCode = "200", description = "Initial game values are created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = GameResponseDTO.class)) }) })
-    @GetMapping("/startGame")
+    @PostMapping("/startGame")
     public GameResponseDTO startGame() {
         log.info("Invoking startGame() endpoint...");
 
@@ -52,7 +52,7 @@ public class GameController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Suitable Pit for sowing is not found",
                     content = @Content) })
-    @GetMapping("/makeMove/{id}")
+    @PutMapping("/makeMove/{id}")
     public GameResponseDTO makeMove(@Parameter(description = "id of pit for sowing") @PathVariable int id) {
         log.info("Invoking makeMove() endpoint...");
 
